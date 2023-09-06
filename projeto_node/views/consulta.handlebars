@@ -86,35 +86,72 @@
                     </div>
                 </div>
                 {{#each post}}
-                    {{#dataValues}}
-                    <div class="row">
-                        <div class="col">
-                            {{nome}}
-                        </div>
-                        <div class="col">
-                            {{telefone}}
-                        </div>
-                        <div class="col">
-                            {{origem}}
-                        </div>
-                        <div class="col">
-                            {{data_contato}}
-                        </div>
-                        <div class="col">
-                            {{observacao}}
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-primary"><a href="/editar/{{id}}" style="color:inherit">Editar</a></button>
-                            <button type="button" class="btn btn-primary"><a href="/excluir/{{id}}" style="color:inherit">Excluir</a></button>
-                        </div>
+                {{#dataValues}}
+                <div class="row">
+                    <div class="col">
+                        {{nome}}
                     </div>
-                    {{/dataValues}}
+                    <div class="col">
+                        {{telefone}}
+                    </div>
+                    <div class="col">
+                        {{origem}}
+                    </div>
+                    <div class="col" id="data_consulta">
+                        {{data_contato}}
+                    </div>
+                    <div class="col">
+                        {{observacao}}
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-primary"><a href="/editar/{{id}}"
+                                style="color:inherit">Editar</a></button>
+                        <button type="button" id="button-delete" class="btn btn-primary">Excluir</button>
+                    </div>
+                </div>
+                {{/dataValues}}
                 {{/each}}
             </div>
             </p>
         </div>
+        <div class="modal container text-center" id="modal" style="display:none;
+        position: fixed; top:50; left: 50; width: 50%; height: 50%; justify-content: center; align-items: center;">
+            <div class="modal">
+                <h2>Deseja Mesmo Excluir?</h2>
+                <button type="button" id="button-close" class="btn btn-primary">fechar</button>
+                <button type="button" class="btn btn-primary"><a href="/excluir/{{id}}"
+                        style="color:inherit">Excluir</a></button>
+            </div>
+        </div>
+
         <div class="col-1">
             &nbsp;
         </div>
     </div>
 </div>
+<script>
+    var buttonDelete = document.getElementById("button-delete");
+    var modal = document.getElementById("modal");
+    var buttonClose = document.getElementById("button-close");
+
+    buttonDelete.addEventListener("click", function () {
+        modal.style.display = "block";
+    });
+
+    buttonClose.addEventListener("click", function () {
+        modal.style.display = "none";
+    });
+
+    var data_consulta = document.getElementById("data_consulta")
+    const dataCadastro = new Date(data_consulta.innerHTML);
+    const dia =
+        dataCadastro.getUTCDate().toLocaleString().length == 1
+            ? '0' + dataCadastro.getUTCDate().toLocaleString().length
+            : dataCadastro.getUTCDate();
+    const mes =
+        (dataCadastro.getMonth() + 1).toString().length == 1
+            ? '0' + (dataCadastro.getMonth() + 1).toString()
+            : (dataCadastro.getMonth() + 1).toString();
+    const ano = dataCadastro.getFullYear().toString();
+    document.getElementById("data_consulta").innerHTML = `${dia}/${mes}/${ano}`;
+</script>
